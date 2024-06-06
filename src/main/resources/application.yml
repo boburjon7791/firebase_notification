@@ -1,0 +1,3 @@
+spring:
+    application: 
+        name: firebase_notification
