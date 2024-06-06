@@ -18,6 +18,6 @@ public class FirebaseNotificationApplication {
 	@Scheduled(cron = "0,10,20,30,40,50 * * * * *")
 	public void sendNotice(){
 		firebaseMessagingService.sendNotice("specific firebase token of mobile device");
-		System.out.println("send");
+		System.out.println("send notice");
     }
 }
