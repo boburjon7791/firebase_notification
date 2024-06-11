@@ -8,6 +8,7 @@ import com.google.firebase.messaging.Notification;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -22,15 +23,18 @@ public class FirebaseMessagingService {
                                     .setBody("Test notification's body")
                                     .setImage("https://static.vecteezy.com/system/resources/thumbnails/025/067/762/small/4k-beautiful-colorful-abstract-wallpaper-photo.jpg")
                                     .build();
-        send(token, notification);
+        send(token, notification).thenAccept(t -> {
+            System.out.println(t);
+        });
     }
-    public void send(String token, Notification notification){
+    public CompletableFuture<Integer> send(String token, Notification notification){
         try {
             Message message=Message.builder()
                                     .setToken(token)
                                     .setNotification(notification)
                                     .build();
             firebaseMessaging.sendAsync(message);
+            return CompletableFuture.completedFuture(1);
         } catch (Exception e) {
             System.out.println();
             StringBuilder sb=new StringBuilder();
@@ -44,6 +48,7 @@ public class FirebaseMessagingService {
                 sb.append("\n");
             }
             log.error(sb.toString());
+            return CompletableFuture.completedFuture(0);
         }
     }
 }
